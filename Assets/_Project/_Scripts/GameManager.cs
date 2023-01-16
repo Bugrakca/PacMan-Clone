@@ -8,7 +8,8 @@ namespace _Project._Scripts
         public Ghost[] ghosts;
         public Pacman pacman;
         public Transform pellets;
-        
+
+        public int ghostMultiplier { get; private set; } = 1;
         public int Score { get; private set; }
         public int Lives { get; private set; }
 
@@ -30,13 +31,14 @@ namespace _Project._Scripts
             {
                 pellet.gameObject.SetActive(true);
             }
-            
+
             ResetState();
         }
 
         private void ResetState()
         {
             SetActivePacmanAndGhosts(true);
+            ResetGhostMultiplier();
         }
 
         private void GameOver()
@@ -60,28 +62,69 @@ namespace _Project._Scripts
             {
                 ghosts[i].gameObject.SetActive(state);
             }
-            
+
             pacman.gameObject.SetActive(state);
         }
-        
+
+        private void ResetGhostMultiplier()
+        {
+            ghostMultiplier = 1;
+        }
+
+        private bool HasRemainingPellets()
+        {
+            foreach (Transform pellet in pellets)
+            {
+                if (pellet.gameObject.activeSelf)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void PelletEaten(Pellet pellet)
+        {
+            pellet.gameObject.SetActive(false);
+            SetScore(Score + pellet.points);
+
+            if (!HasRemainingPellets())
+            {
+                //Game won animation and maybe user input, new round yes or no option.
+                pacman.gameObject.SetActive(false);
+                Invoke(nameof(NewRound), 3.0f);
+            }
+        }
+
+        public void PowerPelletEaten(PowerPellet powerPellet)
+        {
+            //Change ghost state
+            Invoke(nameof(ResetGhostMultiplier), powerPellet.duration);
+            CancelInvoke();
+            PelletEaten(powerPellet);
+        }
+
         public void GhostEaten(Ghost ghost)
         {
             //Death animation here
-            SetScore(Score + ghost.points);
+            int points = ghost.points * ghostMultiplier;
+            SetScore(Score + points);
+            ghostMultiplier++;
         }
 
         public void PacmanEaten()
         {
             //Death animation here
             pacman.gameObject.SetActive(false);
-            
+
             SetLives(Lives - 1);
 
             if (Lives < 0)
             {
                 Invoke(nameof(ResetState), 3f);
             }
-            
+
             GameOver();
         }
     }
