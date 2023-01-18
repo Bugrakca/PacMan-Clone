@@ -18,6 +18,14 @@ namespace _Project._Scripts
             NewGame();
         }
 
+        private void Update()
+        {
+            if (Lives <= 0 && Input.anyKey)
+            {
+                NewGame();
+            }
+        }
+
         private void NewGame()
         {
             SetScore(0);
@@ -37,13 +45,23 @@ namespace _Project._Scripts
 
         private void ResetState()
         {
-            SetActivePacmanAndGhosts(true);
             ResetGhostMultiplier();
+            for (int i = 0; i < ghosts.Length; i++)
+            {
+                ghosts[i].ResetState();
+            }
+
+            pacman.ResetState();
         }
 
         private void GameOver()
         {
-            SetActivePacmanAndGhosts(false);
+            for (int i = 0; i < ghosts.Length; i++)
+            {
+                ghosts[i].gameObject.SetActive(false);
+            }
+
+            pacman.gameObject.SetActive(false);
         }
 
         private void SetScore(int score)
@@ -55,17 +73,7 @@ namespace _Project._Scripts
         {
             Lives = live;
         }
-
-        private void SetActivePacmanAndGhosts(bool state)
-        {
-            for (int i = 0; i < ghosts.Length; i++)
-            {
-                ghosts[i].gameObject.SetActive(state);
-            }
-
-            pacman.gameObject.SetActive(state);
-        }
-
+        
         private void ResetGhostMultiplier()
         {
             ghostMultiplier = 1;
@@ -120,12 +128,15 @@ namespace _Project._Scripts
 
             SetLives(Lives - 1);
 
-            if (Lives < 0)
+            if (Lives > 0)
             {
-                Invoke(nameof(ResetState), 3f);
+                Invoke(nameof(ResetState), 3.0f);
+            }
+            else
+            {
+                GameOver();
             }
 
-            GameOver();
         }
     }
 }

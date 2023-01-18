@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Walls
+    uniqueID: 791306461
+    locked: 0
+  - name: Pacman and Ghosts
+    uniqueID: 3956890495
+    locked: 0
+  - name: Ghost Eyes
+    uniqueID: 2359098277
+    locked: 0
+  - name: Pellets and Nodes
+    uniqueID: 2313960969
+    locked: 0

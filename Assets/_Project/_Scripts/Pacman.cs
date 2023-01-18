@@ -32,6 +32,11 @@ public class Pacman : MonoBehaviour
 
         var angle = Mathf.Atan2(Movement.Direction.y, Movement.Direction.x);
         transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.forward);
-        
+    }
+
+    public void ResetState()
+    {
+        gameObject.SetActive(true);
+        Movement.ResetState();
     }
 }
