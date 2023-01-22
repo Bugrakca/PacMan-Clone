@@ -20,7 +20,7 @@ namespace _Project._Scripts
 
         private void Update()
         {
-            if (Lives <= 0 && Input.anyKey)
+            if (Lives <= 0 && Input.anyKeyDown)
             {
                 NewGame();
             }
@@ -45,7 +45,6 @@ namespace _Project._Scripts
 
         private void ResetState()
         {
-            ResetGhostMultiplier();
             for (int i = 0; i < ghosts.Length; i++)
             {
                 ghosts[i].ResetState();

@@ -47,17 +47,24 @@ public class Ghost : MonoBehaviour
         }
     }
 
+    // public void SetPosition(Vector3 position)
+    // {
+    //     position.z = transform.position.z;
+    //     transform.position = position;
+    // }
+
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (!col.gameObject.layer.Equals(LayerMask.NameToLayer("Pacman"))) return;
-        
-        if (Frightened.enabled)
+        if (col.gameObject.layer.Equals(LayerMask.NameToLayer("Pacman")))
         {
-            FindObjectOfType<GameManager>().GhostEaten(this);
-        }
-        else
-        {
-            FindObjectOfType<GameManager>().PacmanEaten();
+            if (Frightened.enabled)
+            {
+                FindObjectOfType<GameManager>().GhostEaten(this);
+            }
+            else
+            {
+                FindObjectOfType<GameManager>().PacmanEaten();
+            }
         }
     }
 }
