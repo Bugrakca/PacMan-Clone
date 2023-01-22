@@ -106,10 +106,13 @@ namespace _Project._Scripts
 
         public void PowerPelletEaten(PowerPellet powerPellet)
         {
-            //Change ghost state
+            foreach (var ghost in ghosts)
+            {
+                ghost.Frightened.Enable(powerPellet.duration);
+            }
+            PelletEaten(powerPellet);
             Invoke(nameof(ResetGhostMultiplier), powerPellet.duration);
             CancelInvoke();
-            PelletEaten(powerPellet);
         }
 
         public void GhostEaten(Ghost ghost)
