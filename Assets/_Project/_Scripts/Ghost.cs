@@ -41,17 +41,18 @@ public class Ghost : MonoBehaviour
             Home.Disable();
         }
 
-        if (initialBehavior == null)
+        if (initialBehavior != null)
         {
             initialBehavior.Enable();
         }
     }
 
-    // public void SetPosition(Vector3 position)
-    // {
-    //     position.z = transform.position.z;
-    //     transform.position = position;
-    // }
+    public void SetPosition(Vector3 position)
+    {
+        var transform1 = transform;
+        position.z = transform1.position.z;
+        transform1.position = position;
+    }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
